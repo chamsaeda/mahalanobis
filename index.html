@@ -186,17 +186,6 @@
                 const euc = calculateEuclidean(selectedPoint, stats);
                 setMahDistance(mah);
                 setEucDistance(euc);
-                
-                // 이상치 A, B의 거리 계산
-                const mahA = calculateMahalanobis(outlierA, stats);
-                const eucA = calculateEuclidean(outlierA, stats);
-                setMahDistanceA(mahA);
-                setEucDistanceA(eucA);
-                
-                const mahB = calculateMahalanobis(outlierB, stats);
-                const eucB = calculateEuclidean(outlierB, stats);
-                setMahDistanceB(mahB);
-                setEucDistanceB(eucB);
             }, [selectedPoint, data]);
 
             const stats = calculateCovariance(data);
@@ -318,18 +307,6 @@
                             <polygon points="0,-10 -8,8 8,8" fill="#ef4444"/>
                         </g>
 
-                        {/* 이상치 A 표시 */}
-                        <g transform={`translate(${toX(normalized ? (outlierA.height - stats.meanH) / stats.stdH : outlierA.height)}, ${toY(normalized ? (outlierA.weight - stats.meanW) / stats.stdW : outlierA.weight)})`}>
-                            <circle r="8" fill="#ff6b6b" stroke="white" strokeWidth="2"/>
-                            <text y="4" textAnchor="middle" fontSize="10" fontWeight="bold" fill="white">A</text>
-                        </g>
-
-                        {/* 이상치 B 표시 */}
-                        <g transform={`translate(${toX(normalized ? (outlierB.height - stats.meanH) / stats.stdH : outlierB.height)}, ${toY(normalized ? (outlierB.weight - stats.meanW) / stats.stdW : outlierB.weight)})`}>
-                            <circle r="8" fill="#4ecdc4" stroke="white" strokeWidth="2"/>
-                            <text y="4" textAnchor="middle" fontSize="10" fontWeight="bold" fill="white">B</text>
-                        </g>
-
                         <text x={width/2} y={height - 15} textAnchor="middle" fontSize="14">
                             {normalized ? '키 (정규화)' : '키 (cm)'}
                         </text>
@@ -370,10 +347,6 @@
                             <text x="10" y="25" fontSize="11">선택</text>
                             <line x1="-6" y1="40" x2="6" y2="40" stroke="#22c55e" strokeWidth="2"/>
                             <text x="10" y="45" fontSize="11">평균</text>
-                            <circle cx="0" cy="60" r="6" fill="#ff6b6b" stroke="white" strokeWidth="1.5"/>
-                            <text x="10" y="65" fontSize="11">이상치 A</text>
-                            <circle cx="0" cy="80" r="6" fill="#4ecdc4" stroke="white" strokeWidth="1.5"/>
-                            <text x="10" y="85" fontSize="11">이상치 B</text>
                         </g>
 
                         {hoveredPoint && (
@@ -391,6 +364,7 @@
             return (
                 <div className="p-6 max-w-6xl mx-auto bg-white">
                     <div className="mb-6">
+<font color = "blue">부산진여자상업고등학교 인공지능기초 학습자료</font>
                         <h2 className="text-2xl font-bold mb-2 text-blue-600">마할라노비스 거리란 무엇일까요?</h2>
                         <p className="text-gray-700 mb-3">
                             마할라노비스 거리는 어떤 데이터가 전체 그룹에서 얼마나 "특이한지"를 알려주는 거리예요.
@@ -532,33 +506,6 @@
                                         {viewMode === 'aspect' && '1:1 비율로 보면 1cm = 1kg가 같은 길이예요. 단위가 다르므로 유클리드 원이 타원처럼 보여요!'}
                                         {viewMode === 'normalized' && '정규화하면 X축과 Y축이 같은 스케일이 되어서 유클리드 원이 진짜 원이 돼요!'}
                                     </p>
-                                </div>
-                            </div>
-
-                            <div className="bg-orange-50 p-4 rounded-lg text-sm">
-                                <h3 className="font-bold mb-2">🔍 이상치 비교</h3>
-                                <div className="space-y-3">
-                                    <div className="bg-white p-2 rounded border-2 border-red-300">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <div className="w-4 h-4 rounded-full bg-red-400 flex items-center justify-center text-white text-xs font-bold">A</div>
-                                            <span className="font-bold">이상치 A ({outlierA.height}cm, {outlierA.weight}kg)</span>
-                                        </div>
-                                        <div className="text-xs text-gray-600">
-                                            마할라노비스: <strong>{mahDistanceA.toFixed(2)}</strong> / 유클리드: <strong>{eucDistanceA.toFixed(2)}</strong>
-                                        </div>
-                                        <div className="text-xs text-gray-500 mt-1">키는 크지만 몸무게가 적음 (날씬함)</div>
-                                    </div>
-                                    
-                                    <div className="bg-white p-2 rounded border-2 border-teal-300">
-                                        <div className="flex items-center gap-2 mb-1">
-                                            <div className="w-4 h-4 rounded-full bg-teal-400 flex items-center justify-center text-white text-xs font-bold">B</div>
-                                            <span className="font-bold">이상치 B ({outlierB.height}cm, {outlierB.weight}kg)</span>
-                                        </div>
-                                        <div className="text-xs text-gray-600">
-                                            마할라노비스: <strong>{mahDistanceB.toFixed(2)}</strong> / 유클리드: <strong>{eucDistanceB.toFixed(2)}</strong>
-                                        </div>
-                                        <div className="text-xs text-gray-500 mt-1">키는 작지만 몸무게가 많음</div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
